@@ -70,14 +70,14 @@ export const useFetchData = () => {
       setError(null);
 
       try {
-        const response = await fetch(`${API_URL}`);
+        const response = await fetch(API_URL);
         
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const json: Person = await response.json();
-        setData(json);
+        const json = await response.json();
+        setData(json.results[0]); 
       } catch (err) {
         setError((err as Error).message);
         setData(null);
@@ -87,7 +87,7 @@ export const useFetchData = () => {
     };
 
     fetchData();
-  },);
+  }, []); 
 
   return { data, loading, error };
 };

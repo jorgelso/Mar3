@@ -61,6 +61,7 @@ interface Person {
 
 export const useFetchData = () => {
   const [data, setData] = useState<Person | null>(null);
+  const [dataHistory, setDataHistory] = useState<Person[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -77,7 +78,10 @@ export const useFetchData = () => {
         }
 
         const json = await response.json();
-        setData(json.results[0]); 
+        const newData = json.results[0];
+
+        setData(newData);
+        setDataHistory((prevHistory) => [...prevHistory, newData]);
       } catch (err) {
         setError((err as Error).message);
         setData(null);
@@ -89,5 +93,5 @@ export const useFetchData = () => {
     fetchData();
   }, []); 
 
-  return { data, loading, error };
+  return { data, dataHistory, loading, error };
 };

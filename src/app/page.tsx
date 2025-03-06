@@ -4,14 +4,19 @@ import Card from "./Components/card";
 import { useFetchData } from "./Hooks/useFetchData";
 
 export default function Home() {
-  const { data, loading, error } = useFetchData();
+  const { data, dataHistory, loading, error } = useFetchData();
 
   return (
     <div>
       {data && (
-        <pre className="bg-gray-100 p-4 rounded-md text-xs">
+        <>
+        {/* <pre className="bg-gray-100 p-4 rounded-md text-xs">
           {JSON.stringify(data, null, 2)}
-        </pre>
+        </pre> */}
+        <div className="w-full min-h-screen flex items-center justify-center text-center">
+          <Card person={data} />
+        </div>
+        </>
       )}
     </div>
   );

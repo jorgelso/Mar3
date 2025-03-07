@@ -1,63 +1,7 @@
 import { useEffect, useState } from "react";
+import { Person } from "../types/person";
 
 const API_URL = "https://randomuser.me/api/";
-
-interface Person {
-    gender: string;
-    name: {
-        title: string;
-        first: string;
-        last: string;
-    };
-    location: {
-        street: {
-            number: number;
-            name: string;
-        };
-        city: string;
-        state: string;
-        country: string;
-        postcode: string | number;
-        coordinates: {
-            latitude: string;
-            longitude: string;
-        };
-        timezone: {
-            offset: string;
-            description: string;
-        };
-    };
-    email: string;
-    login: {
-        uuid: string;
-        username: string;
-        password: string;
-        salt: string;
-        md5: string;
-        sha1: string;
-        sha256: string;
-    };
-    dob: {
-        date: string;
-        age: number;
-    };
-    registered: {
-        date: string;
-        age: number;
-    };
-    phone: string;
-    cell: string;
-    id: {
-        name: string;
-        value: string;
-    };
-    picture: {
-        large: string;
-        medium: string;
-        thumbnail: string;
-    };
-    nat: string;
-}
 
 export const useFetchData = () => {
   const [data, setData] = useState<Person | null>(null);
@@ -65,33 +9,33 @@ export const useFetchData = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
 
-      try {
-        const response = await fetch(API_URL);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const json = await response.json();
-        const newData = json.results[0];
-
-        setData(newData);
-        setDataHistory((prevHistory) => [...prevHistory, newData]);
-      } catch (err) {
-        setError((err as Error).message);
-        setData(null);
-      } finally {
-        setLoading(false);
+    try {
+      const response = await fetch(API_URL);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    };
 
+      const json = await response.json();
+      const newData = json.results[0];
+
+      setData(newData);
+      setDataHistory((prevHistory) => [...prevHistory, newData]);
+    } catch (err) {
+      setError((err as Error).message);
+      setData(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
-  }, []); 
+  }, []);
 
-  return { data, dataHistory, loading, error };
+  return { data, dataHistory, loading, error, fetchData }; // Return fetchData so it can be used in Home.tsx
 };

@@ -4,7 +4,7 @@ import Card from "./Components/card";
 import { useFetchData } from "./Hooks/useFetchData";
 
 export default function Home() {
-  const { data, dataHistory, loading, error, fetchData } = useFetchData(); // Use fetchData from hook
+  const { data, dataHistory, loading, fetchData } = useFetchData(); // Use fetchData from hook
 
   return (
     <div className="flex">

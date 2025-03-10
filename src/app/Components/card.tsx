@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Image from "next/image";
 import { PersonCard } from "../types/personCard";
 
 interface CardProps {
